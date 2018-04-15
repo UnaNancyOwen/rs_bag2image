@@ -135,31 +135,21 @@ inline void RealSense::initializeParameter( int argc, char * argv[] )
 // Initialize Sensor
 inline void RealSense::initializeSensor()
 {
-    // Set Device Config
+    // Retrieve Each Streams that contain in File
     rs2::config config;
-    config.enable_device_from_file( bag_file.string() );
+    rs2::context context;
+    const rs2::playback playback = context.load_device( bag_file.string() );
+    const std::vector<rs2::sensor> sensors = playback.query_sensors();
+    for( const rs2::sensor& sensor : sensors ){
+        const std::vector<rs2::stream_profile> stream_profiles = sensor.get_stream_profiles();
+        for( const rs2::stream_profile& stream_profile : stream_profiles ){
+            config.enable_stream( stream_profile.stream_type(), stream_profile.stream_index() );
+        }
+    }
 
     // Start Pipeline
+    config.enable_device_from_file( playback.file_name() );
     pipeline_profile = pipeline.start( config );
-
-    /*
-    // [WIP] Start Pipeline supported Two Infrared Streams
-    try{
-        // Start Pipeline with Two Infrared Streams
-        // (But, This method only Start Two Infrared Streams. I must implement other methods.)
-        rs2::config config;
-        config.enable_device_from_file( bag_file.string() );
-        config.enable_stream( rs2_stream::RS2_STREAM_INFRARED, 1 );
-        config.enable_stream( rs2_stream::RS2_STREAM_INFRARED, 2 );
-        pipeline_profile = pipeline.start( config );
-    }
-    catch( const rs2::error& ){
-        // Start Pipeline with Default Streams
-        rs2::config config;
-        config.enable_device_from_file( bag_file.string() );
-        pipeline_profile = pipeline.start( config );
-    }
-    */
 
     // Set Non Real Time Playback
     pipeline_profile.get_device().as<rs2::playback>().set_real_time( false );
