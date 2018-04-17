@@ -166,7 +166,9 @@ inline void RealSense::initializeSave()
 {
     // Create Root Directory (Bag File Name)
     directory = bag_file.parent_path().generic_string() + "/" + bag_file.stem().string();
-    filesystem::create_directories( directory );
+    if( !filesystem::create_directories( directory ) ){
+        throw std::runtime_error( "failed can't create root directory" );
+    }
 
     // Create Sub Directory for Each Streams (Stream Name)
     const std::vector<rs2::stream_profile> stream_profiles = pipeline_profile.get_streams();
