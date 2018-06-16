@@ -8,7 +8,7 @@
 // Constructor
 RealSense::RealSense( int argc, char* argv[] )
 {
-    std::cout << "rs_bag2image " << VERSION << std::endl;
+    std::cout << "rs_bag2image " << RS_BAG2IMAGE_VERSION << std::endl;
 
     // Initialize
     initialize( argc, argv );

@@ -29,4 +29,7 @@ if( realsense2_FOUND AND OpenCV_FOUND )
   # Additional Dependencies
   target_link_libraries( rs_bag2image ${realsense2_LIBRARY} )
   target_link_libraries( rs_bag2image ${OpenCV_LIBS} )
+  if( NOT WIN32 )
+      target_link_libraries( rs_bag2image stdc++fs )
+  endif()
 endif()

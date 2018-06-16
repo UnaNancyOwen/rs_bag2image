@@ -39,7 +39,7 @@ Option
 
 Environment
 -----------
-* Visual Studio 2015/2017 / GCC 4.9 / Clang 3.4 (or later) 
+* Visual Studio 2015/2017 / GCC 5.3 / Clang (require <code>\<filesystem\></code> supported) 
 * RealSense SDK 2.x (librealsense v2.x)
 * OpenCV 3.4.0 (or later)
 * CMake 3.7.2 (latest release is preferred)
