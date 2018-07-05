@@ -337,7 +337,7 @@ inline void RealSense::drawDepth()
     }
 
     // Create cv::Mat form Depth Frame
-    depth_mat = cv::Mat( depth_height, depth_width, CV_16SC1, const_cast<void*>( depth_frame.get_data() ) ).clone();
+    depth_mat = cv::Mat( depth_height, depth_width, CV_16UC1, const_cast<void*>( depth_frame.get_data() ) ).clone();
 }
 
 // Draw Infrared
