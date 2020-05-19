@@ -5,15 +5,15 @@
 #include <opencv2/opencv.hpp>
 
 #include <array>
-#ifdef WIN32
-#include <experimental/filesystem>
-namespace filesystem = std::experimental::filesystem::v1;
-#else
+
 #if __has_include(<filesystem>)
 #include <filesystem>
 namespace filesystem = std::filesystem;
 #else
 #include <experimental/filesystem>
+#if _WIN32
+namespace filesystem = std::experimental::filesystem::v1;
+#else
 namespace filesystem = std::experimental::filesystem;
 #endif
 #endif
