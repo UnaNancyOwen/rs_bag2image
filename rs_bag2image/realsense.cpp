@@ -243,7 +243,11 @@ inline void RealSense::updateDepth()
 inline void RealSense::updateInfrared()
 {
     // Retrieve Infrared Flames
+    #if 29 < RS2_API_MINOR_VERSION
+    frameset.foreach_rs( [this]( const rs2::frame& frame ){
+    #else
     frameset.foreach( [this]( const rs2::frame& frame ){
+    #endif
         if( frame.get_profile().stream_type() == rs2_stream::RS2_STREAM_INFRARED ){
             infrared_frames[frame.get_profile().stream_index() - 1] = frame;
         }
