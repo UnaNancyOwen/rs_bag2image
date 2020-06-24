@@ -5,6 +5,14 @@ set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED ON )
 set( CMAKE_CXX_EXTENSIONS OFF )
 
+# Compiler Option
+set( FILESYSTEM )
+if( "${CMAKE_CXX_COMPILER_ID}" MATCHES "GNU" )
+  set( FILESYSTEM "stdc++fs" )
+elseif( "${CMAKE_CXX_COMPILER_ID}" MATCHES "Clang" )
+  set( FILESYSTEM "c++fs" )
+endif()
+
 # Create Project
 project( rs_bag2image )
 add_executable( rs_bag2image version.h realsense.h realsense.cpp main.cpp )
@@ -30,6 +38,6 @@ if( realsense2_FOUND AND OpenCV_FOUND )
   target_link_libraries( rs_bag2image ${realsense2_LIBRARY} )
   target_link_libraries( rs_bag2image ${OpenCV_LIBS} )
   if( NOT WIN32 )
-      target_link_libraries( rs_bag2image stdc++fs )
+      target_link_libraries( rs_bag2image ${FILESYSTEM} )
   endif()
 endif()
