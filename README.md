@@ -1,7 +1,7 @@
 rs_bag2image
 ============
 
-This is convert tool that works on cross-platform (Windows, Linux, MacOS) for RealSense.  
+This is the convert tool that works on cross-platform (Windows, Linux, MacOS) for RealSense.  
 This tool converts all data of each stream types (Color, Depth, Infrared) that contained in bag file to image file.  
 
 Sample
