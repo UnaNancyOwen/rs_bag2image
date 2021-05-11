@@ -249,7 +249,9 @@ inline void RealSense::updateInfrared()
     frameset.foreach( [this]( const rs2::frame& frame ){
     #endif
         if( frame.get_profile().stream_type() == rs2_stream::RS2_STREAM_INFRARED ){
-            infrared_frames[frame.get_profile().stream_index() - 1] = frame;
+            const int32_t infrared_stream_index = frame.get_profile().stream_index();
+            const int32_t infrared_frame_index = ( infrared_stream_index != 0 ) ? infrared_stream_index - 1 : 0;
+            infrared_frames[infrared_frame_index] = frame;
         }
     } );
 
@@ -354,7 +356,7 @@ inline void RealSense::drawInfrared()
         }
 
         const uint8_t infrared_stream_index = infrared_frame.get_profile().stream_index();
-        const uint8_t infrared_mat_index = infrared_stream_index - 1;
+        const uint8_t infrared_mat_index = ( infrared_stream_index != 0 ) ? infrared_stream_index - 1 : 0;
         const rs2_format infrared_format = infrared_frame.get_profile().format();
         switch( infrared_format ){
             // RGB8 (Color)
@@ -459,7 +461,7 @@ inline void RealSense::showInfrared()
         }
 
         const uint8_t infrared_stream_index = infrared_frame.get_profile().stream_index();
-        const uint8_t infrared_mat_index = infrared_stream_index - 1;
+        const uint8_t infrared_mat_index = ( infrared_stream_index != 0 ) ? infrared_stream_index - 1 : 0;
         if( infrared_mats[infrared_mat_index].empty() ){
             continue;
         }
@@ -537,14 +539,19 @@ inline void RealSense::saveInfrared()
         }
 
         const uint8_t infrared_stream_index = infrared_frame.get_profile().stream_index();
-        const uint8_t infrared_mat_index = infrared_stream_index - 1;
+        const uint8_t infrared_mat_index = ( infrared_stream_index != 0 ) ? infrared_stream_index - 1 : 0;
         if( infrared_mats[infrared_mat_index].empty() ){
             continue;
         }
 
         // Create Save Directory and File Name
         std::ostringstream oss;
-        oss << directory.generic_string() << "/Infrared " << std::to_string( infrared_stream_index ) << "/";
+        if( infrared_stream_index != 0 ){
+            oss << directory.generic_string() << "/Infrared " << std::to_string( infrared_stream_index ) << "/";
+        }
+        else{
+            oss << directory.generic_string() << "/Infrared" << "/";
+        }
         oss << std::setfill( '0' ) << std::setw( 6 ) << infrared_frame.get_frame_number() << ".jpg";
 
         // Write Infrared Image
